@@ -3,24 +3,22 @@ from langchain import *
 import os
 from dotenv import load_dotenv
 from langchain.memory import ConversationBufferMemory
-
+from langchain_community.llms import HuggingFaceEndpoint
 
 load_dotenv()
-import nltk
-nltk.download('punkt')
 
 
 os.environ['HF_KEY'] = os.getenv("HF_KEY")
-repo_id = 'HuggingFaceH4/zephyr-7b-beta'  
-llm = HuggingFaceHub(huggingfacehub_api_token=os.environ['HF_KEY'],
+repo_id = 'mistralai/Mistral-7B-Instruct-v0.2'  
+llm = HuggingFaceEndpoint(huggingfacehub_api_token=os.environ['HF_KEY'],
                      repo_id=repo_id)
 
 
 # Initialize language model and conversation memory
 template = """You're name is Aria you are chatbot having a conversation with a human to his mental status so we can use music therapy to help him.
-write one sentence as answer per time
+reply with one sentence only
 {history}
-You: {input}
+Human: {input}
 Aria:
 """
 
@@ -61,7 +59,7 @@ if st.button('Submit'):
     response = doc_chain.predict(input=user_input)
     print(response)
 
-    st.session_state.chat_history.append(f'Aria: {response}')
+    st.session_state.chat_history.append(f'{response}')
     # Clear user input
     user_input = ""
 
