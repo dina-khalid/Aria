@@ -4,8 +4,12 @@ import os
 from dotenv import load_dotenv
 from langchain.memory import ConversationBufferMemory
 from langchain_community.llms import HuggingFaceEndpoint
-
 load_dotenv()
+# ---------------------- Elements styling -------------------------------- #
+
+with open('style.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
 
 
 os.environ['HF_KEY'] = os.getenv("HF_KEY")
@@ -33,8 +37,8 @@ doc_chain = ConversationChain(llm=llm,prompt=prompt,
 
 
 # Title and sidebar
-st.title('Clinical Chatbot')
-st.markdown('### Conversation')
+st.title('ARIA')
+
 
 
 # Initialize or retrieve session state
@@ -43,30 +47,34 @@ if 'chat_history' not in st.session_state:
 if 'questions' not in st.session_state:
     st.session_state.questions = []
 
-# User input
-user_input = st.text_input('You:', key='input')
 
-# Submit button
-if st.button('Submit'):
-    try:
-        chat_history_text = '\n'.join(st.session_state.chat_history)
-    except:
-        chat_history_text=""
- 
 
-    st.session_state.chat_history.append(f'You: {user_input}')
-    # Generate chatbot response
-    response = doc_chain.predict(input=user_input)
-    print(response)
-
-    st.session_state.chat_history.append(f'{response}')
-    # Clear user input
-    user_input = ""
 
 
 # Display chat history (not editable)
 chat_history_text = '\n'.join(st.session_state.chat_history)
 st.text_area('Chat History', value=chat_history_text, height=200, key='output')
+# Submit button
+inputcol , buttoncol = st.columns([7,1])
+with inputcol:
+    # User input
+    user_input = st.text_input('You:', key='input')
+with buttoncol:
+    if st.button('submit'):
+        try:
+            chat_history_text = '\n'.join(st.session_state.chat_history)
+        except:
+            chat_history_text=""
+    
+
+        st.session_state.chat_history.append(f'You: {user_input}')
+        # Generate chatbot response
+        response = doc_chain.predict(input=user_input)
+        print(response)
+
+        st.session_state.chat_history.append(f'{response}')
+        # Clear user input
+        user_input = ""
 
 # Custom CSS to improve contrast for the disabled text
 custom_css = """
