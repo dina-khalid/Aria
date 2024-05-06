@@ -4,6 +4,9 @@ import os
 from dotenv import load_dotenv
 from langchain.memory import ConversationBufferMemory
 from langchain_community.llms import HuggingFaceEndpoint
+wav_path = "./output_audio.wav"
+wav_file = open(wav_path, "rb")
+
 load_dotenv()
 # ---------------------- Elements styling -------------------------------- #
 
@@ -75,6 +78,10 @@ with buttoncol:
         st.session_state.chat_history.append(f'{response}')
         # Clear user input
         user_input = ""
+
+if st.button('generate music'):
+    if wav_file is not None:
+        st.audio(wav_file.read())
 
 # Custom CSS to improve contrast for the disabled text
 custom_css = """

@@ -11,3 +11,7 @@ text-align: center;
     
     align-items: center !important;
 }
+.row-widget.stButton{
+    display: flex;
+    justify-content: center;
+}
