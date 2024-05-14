@@ -95,8 +95,8 @@ def display_and_play_audio(filename="./output_audio.wav", mime_type="audio/wav")
 if st.button('generate music'):
     print(st.session_state.chat_history[-1])
     sentences = st.session_state.chat_history[-1].split(".!?”")
-    print(sentences)
-    audio_bytes =  generate_music(sentences[0])
+    print(sentences[0][6:])
+    audio_bytes =  generate_music(sentences[0][6:])
     if audio_bytes is not None:  # Check if audio generation was successful
       display_and_play_audio()
     else:
