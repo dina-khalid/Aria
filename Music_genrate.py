@@ -5,7 +5,7 @@ import requests
 API_URL = "https://api-inference.huggingface.co/models/facebook/musicgen-small"
 
 load_dotenv()  # This loads the variables from .env
-API_TOKEN = os.getenv("API_TOKEN")
+API_TOKEN = os.getenv("HF_KEY")
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
 def generate_music(text):
@@ -19,3 +19,4 @@ def generate_music(text):
     })
     with open('output_audio.wav', 'wb') as audio_file:
         audio_file.write(audio_bytes)
+    return audio_bytes

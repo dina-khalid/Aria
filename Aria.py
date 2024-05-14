@@ -4,8 +4,8 @@ import os
 from dotenv import load_dotenv
 from langchain.memory import ConversationBufferMemory
 from langchain_community.llms import HuggingFaceEndpoint
-wav_path = "./output_audio.wav"
-wav_file = open(wav_path, "rb")
+from Music_genrate import generate_music
+
 
 load_dotenv()
 # ---------------------- Elements styling -------------------------------- #
@@ -16,6 +16,9 @@ with open('style.css') as f:
 
 
 os.environ['HF_KEY'] = os.getenv("HF_KEY")
+print(os.environ['HF_KEY'])
+import huggingface_hub
+print(huggingface_hub.__version__)
 repo_id = 'mistralai/Mistral-7B-Instruct-v0.2'  
 llm = HuggingFaceEndpoint(huggingfacehub_api_token=os.environ['HF_KEY'],
                      repo_id=repo_id)
@@ -79,9 +82,21 @@ with buttoncol:
         # Clear user input
         user_input = ""
 
-if st.button('generate music'):
+def display_and_play_audio(filename="./output_audio.wav", mime_type="audio/wav"):
+    wav_file = open(filename, "rb")
     if wav_file is not None:
         st.audio(wav_file.read())
+
+
+if st.button('generate music'):
+    print(st.session_state.chat_history[-1])
+    sentences = st.session_state.chat_history[-1].split(".!?”")
+    print(sentences)
+    audio_bytes =  generate_music(sentences[0])
+    if audio_bytes is not None:  # Check if audio generation was successful
+      display_and_play_audio()
+    else:
+      st.error("Error generating audio. Please check your `generate_music` function.")
 
 # Custom CSS to improve contrast for the disabled text
 custom_css = """
