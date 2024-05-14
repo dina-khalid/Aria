@@ -76,11 +76,15 @@ with buttoncol:
         st.session_state.chat_history.append(f'You: {user_input}')
         # Generate chatbot response
         response = doc_chain.predict(input=user_input)
-        print(response)
 
         st.session_state.chat_history.append(f'{response}')
+        
+
+
         # Clear user input
         user_input = ""
+        # re-render 
+        st.experimental_rerun()
 
 def display_and_play_audio(filename="./output_audio.wav", mime_type="audio/wav"):
     wav_file = open(filename, "rb")
