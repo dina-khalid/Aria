@@ -77,7 +77,7 @@ with buttoncol:
         # Generate chatbot response
         response = doc_chain.predict(input=user_input)
 
-        st.session_state.chat_history.append(f'{response}')
+        st.session_state.chat_history.append(f'Aria: {response}')
         
 
 
